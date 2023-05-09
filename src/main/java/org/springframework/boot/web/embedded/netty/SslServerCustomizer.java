@@ -99,8 +99,13 @@ public class SslServerCustomizer implements NettyServerCustomizer {
             if (this.ssl.getEnabledProtocols() != null) {
                 builder.protocols(this.ssl.getEnabledProtocols());
             }
+
+            boolean needSupportSm = false;
             if (this.ssl.getCiphers() != null) {
                 builder.ciphers(Arrays.asList(this.ssl.getCiphers()));
+                for(String cipher : this.ssl.getCiphers()) {
+                    needSupportSm = needSupportSm || cipher.contains("SM");
+                }
             }
             if (this.ssl.getClientAuth() == Ssl.ClientAuth.NEED) {
                 builder.clientAuth(ClientAuth.REQUIRE);
@@ -108,7 +113,10 @@ public class SslServerCustomizer implements NettyServerCustomizer {
             else if (this.ssl.getClientAuth() == Ssl.ClientAuth.WANT) {
                 builder.clientAuth(ClientAuth.OPTIONAL);
             }
-            builder.sslContextProvider(NettyWebsocketApplication.Tongsuo_Security_Provider);
+
+            if(needSupportSm) {
+                builder.sslContextProvider(NettyWebsocketApplication.Tongsuo_Security_Provider);
+            }
         });
         return sslContextSpec;
     }
