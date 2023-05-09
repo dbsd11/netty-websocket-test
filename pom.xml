@@ -85,9 +85,10 @@
         </dependency>
 
         <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>gmsse</artifactId>
-            <version>1.1.0</version>
+            <groupId>net.tongsuo</groupId>
+            <artifactId>tongsuo-openjdk</artifactId>
+            <version>1.0.0</version>
+            <classifier>${os.detected.classifier}</classifier>
         </dependency>
 
          <!-- JUnit5 -->
@@ -155,6 +156,13 @@
                 </configuration>
             </plugin>
         </plugins>
+        <extensions>
+            <extension>
+            <groupId>kr.motd.maven</groupId>
+            <artifactId>os-maven-plugin</artifactId>
+            <version>1.4.1.Final</version>
+        </extension>
+    </extensions>
     </build>
 
 </project>
