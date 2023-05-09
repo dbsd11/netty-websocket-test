@@ -10,7 +10,7 @@ public class WebsocketTestRunner {
     @Test
     public void test () throws Exception {
         for(int i =0; i< 1000; i++) {
-            WebsocketClientTest.main(new String[0]);
+            HttpClientTest.main(new String[0]);
         }
     }
 }
