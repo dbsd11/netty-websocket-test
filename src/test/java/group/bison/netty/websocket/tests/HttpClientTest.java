@@ -1,4 +1,4 @@
-package group.bison.jetty.websocket.tests;
+package group.bison.netty.websocket.tests;
 
 import net.tongsuo.TongsuoProvider;
 import org.apache.commons.io.IOUtils;

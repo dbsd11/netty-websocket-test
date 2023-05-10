@@ -1,6 +1,7 @@
- package group.bison.jetty.websocket.tests;
+ package group.bison.netty.websocket.tests;
 
  import net.tongsuo.TongsuoProvider;
+ import org.bouncycastle.jce.provider.BouncyCastleProvider;
  import org.eclipse.jetty.util.ssl.SslContextFactory;
  import org.eclipse.jetty.websocket.jsr356.ClientContainer;
  import org.eclipse.jetty.websocket.jsr356.JettyClientContainerProvider;
@@ -8,6 +9,9 @@
  import org.junit.runner.RunWith;
  import org.junit.runners.JUnit4;
 
+ import javax.net.ssl.SSLContext;
+ import javax.net.ssl.TrustManager;
+ import javax.net.ssl.X509TrustManager;
  import javax.websocket.ClientEndpoint;
  import javax.websocket.CloseReason;
  import javax.websocket.Endpoint;
@@ -16,7 +20,10 @@
  import javax.websocket.Session;
  import java.net.URI;
  import java.nio.ByteBuffer;
+ import java.security.SecureRandom;
  import java.security.Security;
+ import java.security.cert.CertificateException;
+ import java.security.cert.X509Certificate;
 
  @RunWith(JUnit4.class)
  public class WebsocketClientTest {
@@ -34,14 +41,31 @@
          container.setDefaultMaxSessionIdleTimeout(30l * 24 * 60 * 60 * 1000);
          container.getClient().setConnectTimeout(30l * 24 * 60 * 60 * 1000);
 
-         Security.addProvider(new TongsuoProvider());
+         TrustManager[] tms = new TrustManager[]{new X509TrustManager() {
+             @Override
+             public X509Certificate[] getAcceptedIssuers() {
+                 return new X509Certificate[0];
+             }
+
+             @Override
+             public void checkClientTrusted(X509Certificate[] certs, String authType) {
+             }
+
+             @Override
+             public void checkServerTrusted(X509Certificate[] certs, String authType) throws CertificateException {
+             }
+
+         }};
+
+         // init SSLSocketFactory
+         SSLContext sc = SSLContext.getInstance("TLSv1.3", new TongsuoProvider());
+         sc.init(null, tms, new SecureRandom());
 
          SslContextFactory sslContextFactory = container.getClient().getHttpClient().getSslContextFactory();
-         sslContextFactory.setProtocol("TLSv1.3");
-         sslContextFactory.setProvider("Tongsuo_Security_Provider");
+         sslContextFactory.setSslContext(sc);
 
          Session session = container.connectToServer(MyClientEndpoint.class, new URI(
-                 "wss://localhost:10101/status/report/wss"));
+                 "wss://localhost/status/report/wss"));
          session.setMaxIdleTimeout(30l * 24 * 60 * 60 * 1000);
          System.out.println("connect success cost time :"
                  + (System.currentTimeMillis() - connectStartTime));
