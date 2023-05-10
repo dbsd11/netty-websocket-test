@@ -32,16 +32,18 @@ java -jar target/netty-websocket-test*.jar
 
 依赖服务项
 
-    无
+* 针对jdk1.8或以下的 jre security 配置修改
+
+  `echo 'crypto.policy=unlimited' >> ${JAVA_HOME}/jre/lib/security/java.security`
 
 测试
 
 1. 测试https方式请求请求
 
-   `mvn clean compile test -Dtest=group.bison.netty.websocket.tests.HttpClientTest`
+   `mvn test -Dtest=group.bison.netty.websocket.tests.HttpClientTest`
 2. 测试wss方式请求服务
 
-   `mvn clean compile test -Dtest=group.bison.netty.websocket.tests.WebsocketClientTest`
+   `mvn test -Dtest=group.bison.netty.websocket.tests.WebsocketClientTest`
 
 >>>>>>> e333587 (add README)
 >>>>>>>
