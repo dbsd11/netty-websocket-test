@@ -6,7 +6,15 @@
 
 1. tls
    * TLS(v1.2/v1.3) ，支持国密加解密算法(基于tongsuo provider实现，目前仅做了单向认证)
+     具体配置见这几个文件：
+
+     ```
+     group.bison.netty.websocket.config.SslConfiguration.java
+     org.springframework.boot.web.embedded.netty.SslServerCustomizer.java
+     src/main/resources/application.yml
+     ```
 2. protobuf(开发中)
+3. http2.0(开发中)
 
 ## 使用
 
