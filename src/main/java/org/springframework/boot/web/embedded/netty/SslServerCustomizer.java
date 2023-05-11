@@ -114,7 +114,7 @@ public class SslServerCustomizer implements NettyServerCustomizer {
             }
 
             if(needSupportSm) {
-                builder.sslContextProvider(SslConfiguration.Tongsuo_Security_Provider);
+                builder.sslContextProvider(SslConfiguration.Tongsuo_Security_Provider.get());
             }
         });
         return sslContextSpec;
