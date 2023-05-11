@@ -58,6 +58,18 @@
             <!-- <scope>provided</scope> -->
         </dependency>
 
+        <!-- protobuf -->
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java</artifactId>
+			<version>3.22.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java-util</artifactId>
+			<version>3.22.2</version>
+		</dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -88,7 +100,8 @@
             <groupId>net.tongsuo</groupId>
             <artifactId>tongsuo-openjdk</artifactId>
             <version>1.0.0</version>
-            <classifier>${os.detected.classifier}</classifier>
+            <!-- <classifier>${os.detected.classifier}</classifier> -->
+            <classifier>linux-x86_64</classifier>
         </dependency>
 
          <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on -->

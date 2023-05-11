@@ -9,7 +9,13 @@
  import org.junit.runner.RunWith;
  import org.junit.runners.JUnit4;
 
- import javax.net.ssl.SSLContext;
+import com.google.protobuf.Any;
+
+import group.bison.netty.protoc.messages.WebSocketMessages.Event;
+import group.bison.netty.protoc.messages.WebSocketMessages.StatusReportValue;
+import group.bison.netty.protoc.messages.WebSocketMessages.WebsocketRequest;
+
+import javax.net.ssl.SSLContext;
  import javax.net.ssl.TrustManager;
  import javax.net.ssl.X509TrustManager;
  import javax.websocket.ClientEndpoint;
@@ -58,7 +64,8 @@
          }};
 
          // init SSLSocketFactory
-         SSLContext sc = SSLContext.getInstance("TLSv1.3", new TongsuoProvider());
+        //  SSLContext sc = SSLContext.getInstance("TLSv1.3", new TongsuoProvider());
+        SSLContext sc = SSLContext.getInstance("TLS");
          sc.init(null, tms, new SecureRandom());
 
          SslContextFactory sslContextFactory = container.getClient().getHttpClient().getSslContextFactory();
@@ -73,7 +80,13 @@
          for(int i =0; i< 20; i++) {
              try {
                  session.getBasicRemote().sendPing(ByteBuffer.wrap("{}".getBytes()));
-                 session.getBasicRemote().sendText("report seq: " + i + " device online: " + (i % 2 == 0));
+                 if(i%3==0) {
+                    StatusReportValue statusReportValue = StatusReportValue.newBuilder().setOnline(i % 2 == 0).build();
+                    WebsocketRequest websocketRequest = WebsocketRequest.newBuilder().setEvent(Event.ON_LINE).setValue(Any.pack(statusReportValue)).build();
+                    session.getBasicRemote().sendBinary(ByteBuffer.wrap(websocketRequest.toByteArray()));;
+                 } else {
+                    session.getBasicRemote().sendText("report seq: " + i + " device online: " + (i % 2 == 0));
+                 }
                  Thread.sleep(1000);
              } catch (Exception e) {
                  e.printStackTrace();

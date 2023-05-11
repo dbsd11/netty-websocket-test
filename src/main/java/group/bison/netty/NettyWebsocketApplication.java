@@ -9,7 +9,6 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 @EnableWebFlux
 public class NettyWebsocketApplication {
 
-
     public static void main(String[] args) throws Exception {
         try {
             SpringApplication.run(NettyWebsocketApplication.class, args);

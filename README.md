@@ -1,6 +1,6 @@
 # 铜锁训练营作品提交仓库-基于Netty的reactive server
 
-利用spring boot webflux + netty reactive 搭建高性能的http/websocket服务。支持ssl加密，后续计划接入protobuf 实现tcp层的数据高效传输。
+利用spring boot webflux + netty reactive 搭建高性能的http/websocket服务。支持ssl加密， websocket协议支持protobuf 消息，后续http协议支持http2.0。
 
 ## 设计
 
@@ -13,7 +13,7 @@
      org.springframework.boot.web.embedded.netty.SslServerCustomizer.java
      src/main/resources/application.yml
      ```
-2. protobuf(开发中)
+2. protobuf
 3. http2.0(开发中)
 
 ## 使用

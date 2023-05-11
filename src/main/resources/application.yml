@@ -2,18 +2,23 @@ server:
   port: 443
   http2:
     enabled: false
+  # ssl:
+  #   key-alias:  sm2-selfsign
+  #   key-store-password: '123456'
+  #   key-store:  classpath:sm2-selfsign.p12
+  #   key-store-type: PKCS12
+  #   key-store-provider: BC
+  #   enabled-protocols:
+  #     - TLSv1.2
+  #     - TLSv1.3
+  #   ciphers:
+  #     - TLS_SM4_GCM_SM3
+  #     - TLS_SM4_CCM_SM3
   ssl:
-    key-alias:  sm2-selfsign
+    key-alias:  common
     key-store-password: '123456'
-    key-store:  classpath:sm2-selfsign.p12
+    key-store:  classpath:common.p12
     key-store-type: PKCS12
-    key-store-provider: BC
-    enabled-protocols:
-      - TLSv1.2
-      - TLSv1.3
-    ciphers:
-      - TLS_SM4_GCM_SM3
-      - TLS_SM4_CCM_SM3
 
 spring:
   main:
