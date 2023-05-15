@@ -1,5 +1,5 @@
 HELP.md
-/target/
+target/
 !.mvn/wrapper/maven-wrapper.jar
 # *.pem
 
@@ -47,3 +47,4 @@ HELP.md
 .vscode
 
 .DS_Store
+
