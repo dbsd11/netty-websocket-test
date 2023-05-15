@@ -5,7 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
-@SpringBootApplication(exclude = {ErrorMvcAutoConfiguration.class})
+import com.alipay.sofa.ark.springboot.ArkAutoConfiguration;
+
+@SpringBootApplication(exclude = {ErrorMvcAutoConfiguration.class, ArkAutoConfiguration.class})
 @EnableWebFlux
 public class NettyWebsocketApplication {
 

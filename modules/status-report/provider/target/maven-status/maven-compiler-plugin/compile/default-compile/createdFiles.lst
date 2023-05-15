@@ -1,0 +1,4 @@
+group/bison/netty/modules/statusreport/Main.class
+group/bison/netty/modules/statusreport/provider/StatusReportServiceImpl.class
+group/bison/netty/modules/statusreport/ark/StatusReportPluginActivator.class
+group/bison/netty/modules/statusreport/ark/ArkAutoConfiguration.class

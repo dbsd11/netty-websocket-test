@@ -10,8 +10,10 @@ import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.WebSocketMessage.Type;
 import org.springframework.web.reactive.socket.WebSocketSession;
 
+import com.alipay.sofa.runtime.api.annotation.SofaReference;
 import com.google.protobuf.Descriptors.Descriptor;
 
+import group.bison.netty.modules.statusreport.facade.StatusReportService;
 import group.bison.netty.protoc.messages.WebSocketMessages;
 import group.bison.netty.protoc.messages.WebSocketMessages.StatusReportValue;
 import group.bison.netty.protoc.messages.WebSocketMessages.WebsocketRequest;
@@ -23,9 +25,12 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/status")
 public class StatusReportController implements WebSocketHandler {
 
+    @SofaReference
+    private StatusReportService statusReportService;
+
     @RequestMapping("/report")
     public Mono reportFromHttp(@RequestBody String body) {
-        String processResult = processStatusReport("http", body);
+        String processResult = statusReportService.onReport("http", body);
         return Mono.just(processResult);
     }
 

@@ -21,6 +21,8 @@ server:
     key-store-type: PKCS12
 
 spring:
+  application:
+    name: "netty-websocket-test"
   main:
     allow-bean-definition-overriding: true
 
