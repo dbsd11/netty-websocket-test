@@ -9,13 +9,13 @@
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>status-report</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>spring-context</artifactId>
 
-    <modules>
-        <module>facade</module>
-        <module>protoc</module>
-        <module>provider</module>
-        <module>provider-wss</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>

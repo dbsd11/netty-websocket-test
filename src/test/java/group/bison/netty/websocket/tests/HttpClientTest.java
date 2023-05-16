@@ -40,7 +40,8 @@ public class HttpClientTest {
         }};
 
         // init SSLSocketFactory
-        SSLContext sc = SSLContext.getInstance("TLSv1.3", new TongsuoProvider());
+        // SSLContext sc = SSLContext.getInstance("TLSv1.3", new TongsuoProvider());
+        SSLContext sc = SSLContext.getInstance(null);
         sc.init(null, tms, new SecureRandom());
         SSLSocketFactory ssf = sc.getSocketFactory();
 

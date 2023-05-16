@@ -1,19 +1,17 @@
-package group.bison.netty.websocket.controller;
+package group.bison.netty.modules.statusreport.provider_wss;
+
+import java.util.function.Function;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketMessage;
 import org.springframework.web.reactive.socket.WebSocketMessage.Type;
 import org.springframework.web.reactive.socket.WebSocketSession;
 
-import com.alipay.sofa.runtime.api.annotation.SofaReference;
 import com.google.protobuf.Descriptors.Descriptor;
 
-import group.bison.netty.modules.statusreport.facade.StatusReportService;
 import group.bison.netty.protoc.messages.WebSocketMessages;
 import group.bison.netty.protoc.messages.WebSocketMessages.StatusReportValue;
 import group.bison.netty.protoc.messages.WebSocketMessages.WebsocketRequest;
@@ -21,17 +19,17 @@ import group.bison.netty.protoc.messages.WebSocketMessages.WebsocketResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@RestController
-@RequestMapping("/status")
-public class StatusReportController implements WebSocketHandler {
+@Service
+public class StatusReportWssServiceImpl implements WebSocketHandler {
 
-    @SofaReference
-    private StatusReportService statusReportService;
+    {
+        System.out.println("inited StatusReportWssServiceImpl ClassLoader:" + Thread.currentThread().getContextClassLoader());
+    }
 
-    @RequestMapping("/report")
-    public Mono reportFromHttp(@RequestBody String body) {
-        String processResult = statusReportService.onReport("http", body);
-        return Mono.just(processResult);
+    public WebsocketResponse onReport(String from, WebSocketMessages.StatusReportValue statusReportValue) {
+        System.out.println("receive from " + from + " status report online: " + statusReportValue.getOnline());
+        WebsocketResponse websocketResponse = WebsocketResponse.newBuilder().setCode(0).setMessage(from + " ok ").build();
+        return websocketResponse;
     }
 
     @Override
@@ -42,8 +40,8 @@ public class StatusReportController implements WebSocketHandler {
         Flux<WebSocketMessage> reponseMessageFlux = session.receive().map(message -> {
                     WebSocketMessage reponseMessage = null;
                     if(message.getType() == Type.TEXT) {
-                        String processResult = processStatusReport("websocket", message.getPayloadAsText());
-                        reponseMessage = session.textMessage(processResult);
+                        // do nothing
+                        reponseMessage = session.textMessage("hello");
                     } else if (message.getType() == Type.BINARY) {
                         try {
                             WebsocketRequest webSocketRequest = WebsocketRequest.parseFrom(message.getPayload().asByteBuffer());
@@ -58,7 +56,7 @@ public class StatusReportController implements WebSocketHandler {
 
                             if(StringUtils.equals(websocketRequestValueClassName, StatusReportValue.class.getName())) {
                                 StatusReportValue statusReportValue = webSocketRequest.getValue().unpack(StatusReportValue.class);
-                                WebsocketResponse websocketResponse = processStatusReport("websocket", statusReportValue);
+                                WebsocketResponse websocketResponse = onReport("websocket", statusReportValue);
                                 reponseMessage = session.binaryMessage((dataBufferFactory) -> {
                                     DataBuffer bb = dataBufferFactory.allocateBuffer();
                                     bb.write(websocketResponse.toByteArray());
@@ -68,26 +66,10 @@ public class StatusReportController implements WebSocketHandler {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    }   
+                    }
                     return reponseMessage;
-                }).filter(obj -> obj != null);
+                }).mapNotNull(Function.identity());
         Mono<Void> output2 = output1.then(session.send(reponseMessageFlux));
         return output2.then();
-    }
-
-    String processStatusReport(String from, String reportContent) {
-        System.out.println("receive from " + from + " status report: " + reportContent);
-
-        if("websocket".equals(from) && reportContent.contains("seq:")) {
-            int seq = Integer.valueOf(reportContent.substring(reportContent.indexOf("seq:") + 4, reportContent.indexOf("seq:") + 7).trim()).intValue();
-            return from + " ok " + "seq: " + seq;
-        }
-        return from + " ok ";
-    }
-
-    WebsocketResponse processStatusReport(String from, WebSocketMessages.StatusReportValue statusReportValue) {
-        System.out.println("receive from " + from + " status report online: " + statusReportValue.getOnline());
-        WebsocketResponse response = WebsocketResponse.newBuilder().setCode(0).setMessage(from + " ok ").build();
-        return response;
     }
 }

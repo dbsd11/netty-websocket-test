@@ -37,7 +37,7 @@ import javax.net.ssl.SSLEngine;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509ExtendedKeyManager;
 
-import group.bison.netty.websocket.config.SslConfiguration;
+import group.bison.netty.config.SslConfiguration;
 import io.netty.handler.ssl.ClientAuth;
 import reactor.netty.http.Http11SslContextSpec;
 import reactor.netty.http.Http2SslContextSpec;

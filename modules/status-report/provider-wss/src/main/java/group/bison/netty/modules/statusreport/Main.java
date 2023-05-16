@@ -14,9 +14,9 @@ public class Main {
             System.setProperty("com.alipay.sofa.boot.dynamicJvmServiceCacheEnable", "true");
             System.setProperty("com.alipay.sofa.boot.skipJvmSerialize", "true");
             
-            context = new AnnotationConfigApplicationContext("group.bison.netty.modules.statusreport", "com.alipay.sofa");
+            context = new AnnotationConfigApplicationContext("group.bison.netty.modules", "com.alipay.sofa");
             context.start();
-            System.out.println("started status report with args: " + Arrays.toString(args));
+            System.out.println("started status report wss with args: " + Arrays.toString(args));
         } catch (Throwable e) {
             e.printStackTrace();
         }

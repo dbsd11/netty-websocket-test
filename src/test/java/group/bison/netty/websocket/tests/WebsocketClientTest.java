@@ -1,35 +1,34 @@
  package group.bison.netty.websocket.tests;
 
- import net.tongsuo.TongsuoProvider;
- import org.bouncycastle.jce.provider.BouncyCastleProvider;
- import org.eclipse.jetty.util.ssl.SslContextFactory;
- import org.eclipse.jetty.websocket.jsr356.ClientContainer;
- import org.eclipse.jetty.websocket.jsr356.JettyClientContainerProvider;
- import org.junit.Test;
- import org.junit.runner.RunWith;
- import org.junit.runners.JUnit4;
+ import java.net.URI;
+import java.nio.ByteBuffer;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import javax.websocket.ClientEndpoint;
+import javax.websocket.CloseReason;
+import javax.websocket.Endpoint;
+import javax.websocket.EndpointConfig;
+import javax.websocket.MessageHandler;
+import javax.websocket.Session;
+
+import org.eclipse.jetty.util.ssl.SslContextFactory;
+import org.eclipse.jetty.websocket.jsr356.ClientContainer;
+import org.eclipse.jetty.websocket.jsr356.JettyClientContainerProvider;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import com.google.protobuf.Any;
 
 import group.bison.netty.protoc.messages.WebSocketMessages.Event;
 import group.bison.netty.protoc.messages.WebSocketMessages.StatusReportValue;
 import group.bison.netty.protoc.messages.WebSocketMessages.WebsocketRequest;
-
-import javax.net.ssl.SSLContext;
- import javax.net.ssl.TrustManager;
- import javax.net.ssl.X509TrustManager;
- import javax.websocket.ClientEndpoint;
- import javax.websocket.CloseReason;
- import javax.websocket.Endpoint;
- import javax.websocket.EndpointConfig;
- import javax.websocket.MessageHandler;
- import javax.websocket.Session;
- import java.net.URI;
- import java.nio.ByteBuffer;
- import java.security.SecureRandom;
- import java.security.Security;
- import java.security.cert.CertificateException;
- import java.security.cert.X509Certificate;
+import group.bison.netty.protoc.messages.WebSocketMessages.WebsocketResponse;
 
  @RunWith(JUnit4.class)
  public class WebsocketClientTest {
@@ -104,6 +103,7 @@ import javax.net.ssl.SSLContext;
          public void onOpen(Session session, EndpointConfig config) {
              System.out.println("websocket connection is opened.");
              session.addMessageHandler(new MyClientMessageListener());
+             session.addMessageHandler(new MyClientMessageListener2());
          }
 
          @Override
@@ -129,4 +129,16 @@ import javax.net.ssl.SSLContext;
 
          }
      }
+
+     public static class MyClientMessageListener2 implements MessageHandler.Whole<byte[]> {
+
+        @Override
+        public void onMessage(byte[] bytes) {
+            try {
+                WebsocketResponse websocketResponse = WebsocketResponse.parseFrom(bytes);
+                System.out.println("i receive a message=" + websocketResponse.toString());
+            } catch (Exception e) {
+            }
+        }
+    }
  }

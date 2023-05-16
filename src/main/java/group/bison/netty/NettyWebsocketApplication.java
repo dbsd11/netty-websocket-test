@@ -13,6 +13,10 @@ public class NettyWebsocketApplication {
 
     public static void main(String[] args) throws Exception {
         try {
+            System.setProperty("sofa.ark.embed.enable", "true");
+            System.setProperty("com.alipay.sofa.boot.jvmFilterEnable", "true");
+            System.setProperty("com.alipay.sofa.boot.dynamicJvmServiceCacheEnable", "true");
+            System.setProperty("com.alipay.sofa.boot.skipJvmSerialize", "true");
             SpringApplication.run(NettyWebsocketApplication.class, args);
         } catch (Throwable e) {
             e.printStackTrace();
