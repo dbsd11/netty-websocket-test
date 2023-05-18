@@ -155,6 +155,12 @@
         </dependency>
         <dependency>
             <groupId>group.bison.netty.modules</groupId>
+            <artifactId>oauth2</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <classifier>ark-plugin</classifier>
+        </dependency>
+        <dependency>
+            <groupId>group.bison.netty.modules</groupId>
             <artifactId>status-report-facade</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>

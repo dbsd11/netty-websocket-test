@@ -15,10 +15,6 @@ import com.alipay.sofa.runtime.spring.FinishStartupEventHandler;
 @ConditionalOnArkEnabled
 public class ArkServiceConfiguration {
 
-
-
-    
-    
     @Bean
     public static ArkServiceInjectProcessor serviceInjectProcessor() {
         return new ArkServiceInjectProcessor();
