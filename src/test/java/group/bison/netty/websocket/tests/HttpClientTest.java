@@ -41,13 +41,14 @@ public class HttpClientTest {
 
         // init SSLSocketFactory
         // SSLContext sc = SSLContext.getInstance("TLSv1.3", new TongsuoProvider());
-        SSLContext sc = SSLContext.getInstance(null);
+        SSLContext sc = SSLContext.getInstance("TLSv1.3");
         sc.init(null, tms, new SecureRandom());
         SSLSocketFactory ssf = sc.getSocketFactory();
 
         URL serverUrl = new URL("https://localhost/status/report");
         HttpsURLConnection conn = (HttpsURLConnection) serverUrl.openConnection();
         conn.setRequestProperty("Content-Type", "application/json");
+        conn.setRequestProperty("Authorization", "Basic YWRtaW46cGFzc3dk");
         conn.setRequestMethod("POST");
         // set SSLSocketFactory
         conn.setSSLSocketFactory(ssf);

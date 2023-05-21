@@ -71,7 +71,7 @@ import group.bison.netty.protoc.messages.WebSocketMessages.WebsocketResponse;
          sslContextFactory.setSslContext(sc);
 
          Session session = container.connectToServer(MyClientEndpoint.class, new URI(
-                 "wss://localhost/status/report/wss"));
+                 "wss://localhost/status/report/wss?access_token=${jwtToken}"));
          session.setMaxIdleTimeout(30l * 24 * 60 * 60 * 1000);
          System.out.println("connect success cost time :"
                  + (System.currentTimeMillis() - connectStartTime));

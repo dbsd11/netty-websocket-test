@@ -25,6 +25,8 @@ spring:
     name: "netty-websocket-test"
   main:
     allow-bean-definition-overriding: true
+  profiles:
+    active: default
 
 thread-pool-props:
   corePoolSize: 5
