@@ -3,6 +3,7 @@ server:
   http2:
     enabled: true
   # ssl:
+  #   enabled: ${ssl_enabled:true}
   #   key-alias:  sm2-selfsign
   #   key-store-password: '123456'
   #   key-store:  classpath:sm2-selfsign.p12
@@ -15,6 +16,7 @@ server:
   #     - TLS_SM4_GCM_SM3
   #     - TLS_SM4_CCM_SM3
   ssl:
+    enabled: ${ssl_enabled:true}
     key-alias:  common
     key-store-password: '123456'
     key-store:  classpath:common.p12
