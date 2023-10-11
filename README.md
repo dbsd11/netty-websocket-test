@@ -16,19 +16,30 @@
 2. protobuf
 3. http2.0(开发中)
 4. 业务biz代码热加载
+   * 通过sofa boot + sofa ark 实现biz代码的模块化和运行类隔离
 
 ## 使用
 
 编译打包：
 
 ```
+cd ${projectDir}/modules
+mvn clean install -DskipTests
+cd ${projectDir}
 mvn clean package -DskipTests
 ```
 
 启动
 
 ```
-java -jar target/netty-websocket-test*.jar
+java -jar target/netty-websocket-test*-ark-biz.jar
+
+// 手动加载插件
+telnet localhost 1234
+biz -i file://${projectDir}/modules/modules/status-report/provider/target/status-report-provider*-ark-biz.jar
+biz -i file://${projectDir}/modules/modules/status-report/provider-wss/target/status-report-provider-wss*-ark-biz.jar
+
+biz -a // 保证netty-websocket-test、status-report-provider、status-report-provider-wss都是一件active的状态
 ```
 
 依赖服务项
@@ -45,11 +56,3 @@ java -jar target/netty-websocket-test*.jar
 2. 测试wss方式请求服务
 
    `mvn test -Dtest=group.bison.netty.websocket.tests.WebsocketClientTest`
-
->>>>>>> e333587 (add README)
->>>>>>>
->>>>>>
->>>>>
->>>>
->>>
->>
