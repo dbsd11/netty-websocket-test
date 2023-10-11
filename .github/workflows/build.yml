@@ -1,0 +1,25 @@
+name: Build Docker Image  
+  
+on:  
+  push:  
+    branches: [ docker ]  
+  pull_request:  
+    branches: [ docker ]  
+  
+jobs:  
+  build:  
+    runs-on: ubuntu-latest  
+    steps:  
+      - name: Checkout Code  
+        uses: actions/checkout@v2  
+      - name: compile and package jars  
+        run: mvn clean package -DskipTests=true
+      - name: Build Docker Image  
+        run: docker buildx build --platform linux/amd64 --build-arg JAR_FILE=netty-websocket-test-1.0.0-SNAPSHOT-ark-biz.jar . -t registry.cn-beijing.aliyuncs.com/dbsnolimit/netty-websocket:latest  
+      - name: Login to aliyun docker registry 
+        run: docker login registry.cn-beijing.aliyuncs.com
+        with:  
+          username: ${{ secrets.DOCKER_USERNAME }}  
+          password: ${{ secrets.DOCKER_PASSWORD }}  
+      - name: Push Docker Image to aliyun docker registry   
+        run: docker push registry.cn-beijing.aliyuncs.com/dbsnolimit/netty-websocket:latest
