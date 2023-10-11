@@ -13,15 +13,16 @@ jobs:
     steps:  
       - name: Checkout Code  
         uses: actions/checkout@v2  
-      - name: compile and install modules  
-        run: cd modules && mvn clean install -DskipTests=true -q
-      - name: cmpile and package jars  
-        run: mvn clean package -DskipTests=true -q
+      - name: Compile And Install Modules  
+        run: cd modules && pwd && mvn clean install -DskipTests=true -q
+        timeout-minutes: 10
+      - name: Compile And Package Jars  
+        run: pwd && mvn clean package -DskipTests=true -q
         timeout-minutes: 10
       - name: Build Docker Image  
         run: docker buildx build --platform linux/amd64 --build-arg JAR_FILE=netty-websocket-test-1.0.0-SNAPSHOT-ark-biz.jar . -t registry.cn-beijing.aliyuncs.com/dbsnolimit/netty-websocket:latest  
         timeout-minutes: 60
-      - name: Login to aliyun docker registry 
+      - name: Login To Aliyun Docker Registry 
         uses: docker/login-action@v1
         with:
           registry: registry.cn-beijing.aliyuncs.com
