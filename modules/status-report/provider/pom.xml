@@ -22,7 +22,7 @@
 
         <!-- spring context -->
         <dependency>
-            <groupId>org.springframework</groupId>
+            <groupId>group.bison.netty.modules</groupId>
             <artifactId>spring-context</artifactId>
             <scope>provided</scope>
         </dependency>

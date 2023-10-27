@@ -1,7 +1,7 @@
 server:
-  port: 443
+  port: 10443
   http2:
-    enabled: true
+    enabled: false
   # ssl:
   #   key-alias:  sm2-selfsign
   #   key-store-password: '123456'
