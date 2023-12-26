@@ -19,6 +19,9 @@ jobs:
       - name: Compile And Package Jars  
         run: pwd && mvn clean package -DskipTests=true -q
         timeout-minutes: 10
+      - name: Prepare Docker Cross Compile
+        run: docker run --rm --privileged docker/binfmt:a7996909642ee92942dcd6cff44b9b95f08dad64 && docker buildx create --use --name multi-arch-builder
+        timeout-minutes: 10
       - name: Build Docker Image  
         run: docker buildx build --platform linux/amd64 --build-arg JAR_FILE=netty-websocket-test-1.0.0-SNAPSHOT-ark-biz.jar . -t registry.cn-beijing.aliyuncs.com/dbsnolimit/netty-websocket:latest  
         timeout-minutes: 60
