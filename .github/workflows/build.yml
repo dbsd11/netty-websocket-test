@@ -23,7 +23,7 @@ jobs:
         run: docker run --rm --privileged docker/binfmt:a7996909642ee92942dcd6cff44b9b95f08dad64 && docker buildx create --use --name multi-arch-builder
         timeout-minutes: 10
       - name: Build Docker Image  
-        run: docker buildx build --platform linux/amd64 --build-arg JAR_FILE=netty-websocket-test-1.0.0-SNAPSHOT-ark-biz.jar . -t registry.cn-beijing.aliyuncs.com/dbsnolimit/netty-websocket:latest  
+        run: docker buildx build --platform linux/amd64 --build-arg JAR_FILE=netty-websocket-test-1.0.0-SNAPSHOT-ark-biz.jar . -t registry.cn-beijing.aliyuncs.com/dbsnolimit/netty-websocket:latest --load 
         timeout-minutes: 60
       - name: Login To Aliyun Docker Registry 
         uses: docker/login-action@v1
